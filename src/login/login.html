@@ -10,12 +10,37 @@
     <script type="module" src="login.js"></script>
 </head>
 
-<body>
-    <h1 class="underline bg-sky-300 text-red-500 text-center text-2xl">
-        Welcome to Spotify-Clone --&gt; Login.
-    </h1>
-    <div class="btn-wrapper">
-        <button class="bg-black text-white w-10 h-8" id="login">Login</button>
+<body class="flex h-[100vh] items-center justify-center overflow-hidden bg-green">
+    <div class="flex h-[100vh] w-[50%] items-center justify-center p-10">
+        <img class="w-90 h-70 border-none bg-transparent outline-none" src="spotify-logo-black.png"
+            alt="spotify-logo" />
+    </div>
+    <div class="flex h-[100vh] w-[50%] items-end justify-center">
+        <div
+            class="flex h-[60%] w-[60%] flex-col justify-center gap-1 overflow-hidden rounded-t-[4rem] bg-dark text-center text-white transition-transform translate-y-28 hover:translate-y-0">
+            <img class="h-[60%] w-[110%] translate-y-[-3rem] opacity-50 transition-transform hover:translate-y-[-2rem] hover:scale-110"
+                src="login-theme.jpg" alt="login-theme" />
+            <div class="flex flex-col items-center justify-center pl-20 pr-20">
+                <h2 class="translate-y-[-2rem] text-2xl font-extrabold tracking-wider">
+                    Login Using Spotify
+                </h2>
+                <p class="opacity-60">
+                    This is a client application created following guidelines from
+                    <span class="opacity-100% font-bold text-green"><a
+                            href="https://developer.spotify.com/documentation/general/design-and-branding/">Spotify</a></span>.
+                </p>
+                <p class="opacity-60">
+                    No harm or catphising is intended, user data is safe with
+                    <span class="opacity-100% font-bold text-green"><a
+                            href="https://developer.spotify.com/documentation/general/design-and-branding/">Spotify</a></span>.
+                </p>
+            </div>
+            <div class="grid place-items-center">
+                <button class="w-[50%] rounded-full bg-green p-4 font-bold text-dark" id="login">
+                    Authorize With Spotify
+                </button>
+            </div>
+        </div>
     </div>
 </body>
 
