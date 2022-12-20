@@ -1,7 +1,8 @@
-const CLIENT_ID = "6807be2a7d6a44b68f46a04490770afa";
-const REDIRECT_URI = 'http://localhost:3000/login/login.html';
-const ACCESS_TOKEN_KEY = "";
-const APP_URL = "http://localhost:3000/";
+import { ACCESS_TOKEN, TOKEN_TYPE, EXPIRES_IN } from '../common.js';
+
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
+const APP_URL = import.meta.env.VITE_APP_URL;
 const scopes = "user-top-read user-follow-read playlist-read-private user-library-read";
 
 const authorizeUser = () => {
@@ -15,13 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 window.setItemsInLocalStorage = ({ accessToken, tokenType, expiresIn }) => {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("tokenType", tokenType);
-    localStorage.setItem("expiresIn", expiresIn);
+    localStorage.setItem(ACCESS_TOKEN, accessToken);
+    localStorage.setItem(TOKEN_TYPE, tokenType);
+    localStorage.setItem(EXPIRES_IN, expiresIn);
+    window.location.href = APP_URL;
 }
 
 window.addEventListener("load", () => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
     if (accessToken) {
         window.location.href = `${APP_URL}/dashboard/dashboard.html`;
     }
