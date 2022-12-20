@@ -12,3 +12,22 @@ body {
     scroll-behavior: smooth;
     font-family: sans-serif, Helvetica, Arial;
 }
+
+.grid-template-areas {
+    grid-template-areas:
+        "sidenav content"
+        "player player"
+    ;
+}
+
+.side-nav {
+    grid-area: sidenav;
+}
+
+.content {
+    grid-area: content;
+}
+
+.player {
+    grid-area: player;
+}
