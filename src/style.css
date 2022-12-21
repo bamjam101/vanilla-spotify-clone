@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --bg-content: linear-gradient(180deg, rgba(29, 82, 91, 1) 1%, rgba(28, 45, 22, 1) 30%, rgba(16, 20, 18, 1) 100%);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -26,6 +30,8 @@ body {
 
 .content {
     grid-area: content;
+    background: rgb(73, 146, 157);
+    background: var(--bg-content);
 }
 
 .player {
