@@ -11,28 +11,37 @@
 </head>
 
 <body class="bg-black text-white h-screen">
-    <main class="h-full grid grid-template-areas place-items-center grid-rows-[1fr_100px] grid-cols-[250px_1fr]">
+    <main class="h-full grid grid-template-areas place-items-center grid-rows-[1fr_75px] grid-cols-[250px_1fr]">
         <aside class="side-nav h-full w-full py-[8vh] px-[1rem] flex flex-col gap-[1rem]">
             <div class="flex flex-col justify-center items-center pb-[1rem]">
                 <button
-                    class="h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 hover:opacity-100">
-                    <i>
-                        icon
-                    </i>
+                    class="group h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-60 hover:opacity-100 duration-200 rounded-md hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+
                     <h2 class="font-bold">Home</h2>
                 </button>
                 <button
-                    class="h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 focus:opacity-100">
-                    <i>
-                        icon
-                    </i>
+                    class="group h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-60 hover:opacity-100 duration-200 rounded-md hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+
                     <h2 class="font-bold">Search</h2>
                 </button>
                 <button
-                    class="h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 focus:opacity-100">
-                    <i>
-                        icon
-                    </i>
+                    class="group h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-60 hover:opacity-100 duration-200 rounded-md hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                    </svg>
+
                     <h2 class="font-bold text-left">Your Library</h2>
                 </button>
             </div>
@@ -41,17 +50,23 @@
                     <h2 class="font-bold">PLAYLISTS</h2>
                 </header>
                 <button
-                    class="h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 focus:opacity-100">
-                    <i>
-                        icon
-                    </i>
+                    class="group h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 focus:opacity-100 rounded-md hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+
                     <h2 class="font-bold">Create Playlist</h2>
                 </button>
                 <button
-                    class="h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 focus:opacity-100">
-                    <i>
-                        icon
-                    </i>
+                    class="group h-[6vh] w-full p-[1rem] grid grid-cols-[0.4fr_1.6fr] gap-[1rem] place-items-start opacity-80 focus:opacity-100 rounded-md hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] duration-200">
+                        <path
+                            d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+
                     <h2 class="font-bold">Liked Songs</h2>
                 </button>
             </div>
@@ -65,37 +80,49 @@
         </aside>
         <section class="content h-full w-full">
             <nav class="w-full h-[8vh] bg-transparent flex justify-between items-center px-[2rem] py-[0.5rem]">
-                <div class="flex justify-center items-center w-[10vw] gap-[1rem]">
+                <div class="grid grid-cols-[1fr_1fr] place-items-center w-[10vw]">
                     <button class="group p-[0.5rem] border-2 rounded-full"><svg xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            class="h-[2rem] w-[2rem] group-hover:h-[2.2rem] group-hover:w-[2.2rem] duration-200">
+                            class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] group-hover:w-[1.6rem] duration-200">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg></button>
+                        </svg>
+                    </button>
 
 
                     <button class="group p-[0.5rem] border-2 rounded-full"><svg xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            class="h-[2rem] w-[2rem] group-hover:h-[2.2rem] group-hover:w-[2.2rem] duration-200">
+                            class="h-[1.5rem] w-[1.5rem] group-hover:h-[1.6rem] group-hover:w-[1.6rem] duration-200">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg></button>
+                        </svg>
+                    </button>
 
                 </div>
                 <div id="profile-btn"
-                    class="cursor-pointer  group flex justify-center items-center gap-[1rem] px-[2rem] rounded-r-full rounded-l-full bg-black h-[5vh] hover:bg-gray-600 duration-200 relative">
+                    class="group cursor-pointer  group flex justify-center items-center gap-[1rem] px-[2rem] rounded-r-full rounded-l-full bg-black h-[5vh] hover:bg-gray-800 duration-200 relative">
                     <!-- <img src="profile.png" alt="user-profile"> -->
                     <svg id="default-profile" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor"
-                        class="w-[2rem] h-[2rem] group-hover:text-black duration-200">
+                        class="w-[2rem] h-[2rem] group-hover:text-red-500 duration-200">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     <h2 id="username" class="font-bold"></h2>
-                    <span class="opacity-50"> 🔻</span>
-                    <ul class="bg-black hidden absolute rounded-lg right-0 top-12 w-[100%] py-[1rem] px-2">
-                        <li class="font-semibold capitalize w-[100%] py-1 hover:bg-gray-600">Logout</li>
+                    <span class="opacity-50 group-hover:opacity-80 duration-200"> 🔻</span>
+                    <ul id="profile-menu"
+                        class="bg-black hidden absolute rounded-lg right-0 top-12 w-[100%] py-[1rem] px-2">
+                        <li id="logout-btn" class="font-semibold capitalize w-[100%] p-3 rounded hover:bg-gray-600">
+                            Logout</li>
                     </ul>
                 </div>
             </nav>
+            <div class="featured-container p-4">
+                <header>
+                    <h1 class="text-2xl font-bold">Featured Playlists</h1>
+                </header>
+                <div class="featured-songs grid grid-cols-auto-fill-cards gap-4 px-2 mt-2">
+
+                </div>
+            </div>
         </section>
         <footer class="player bg-green h-full w-full">
             player

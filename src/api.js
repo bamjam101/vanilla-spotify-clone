@@ -6,14 +6,14 @@ const getAccessToken = () => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN);
     const tokenType = localStorage.getItem(TOKEN_TYPE);
     const expiresIn = localStorage.getItem(EXPIRES_IN);
-    if (Date.now() > expiresIn) {
+    if (Date.now() < expiresIn) {
         return { accessToken, tokenType };
     } else {
         logout();
     }
 }
 
-const createHeaderConfig = ({ accessToken, tokenType }, method = "GET") => {
+const createAPIConfig = ({ accessToken, tokenType }, method = "GET") => {
     return {
         headers: {
             Authorization: `${tokenType} ${accessToken}`
@@ -23,6 +23,6 @@ const createHeaderConfig = ({ accessToken, tokenType }, method = "GET") => {
 
 export const fetchRequest = async (endpoint) => {
     const url = `${BASE_API_URL}/${endpoint}`;
-    const res = await fetch(url, createHeaderConfig(getAccessToken()));
+    const res = await fetch(url, createAPIConfig(getAccessToken()));
     return res.json();
 }
