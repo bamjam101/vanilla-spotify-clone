@@ -1,5 +1,5 @@
 import { fetchRequest } from "../api";
-import { ENDPOINT, logout } from "../common";
+import { ENDPOINT, logout, SECTIONTYPE } from "../common";
 
 const onProfileButtonClicked = (event) => {
     event.stopPropagation();
@@ -10,8 +10,10 @@ const onProfileButtonClicked = (event) => {
     }
 }
 
-const onPlaylistItemClicked = (event) => {
-    console.log(event.target);
+const onPlaylistItemClicked = (event, id) => {
+    const section = { type: SECTIONTYPE.PLAYLIST, playlist: id };
+    history.pushState(section, "", `playlist/${id}`);
+    loadSection(section);
 }
 
 const loadUserProfile = async (event) => {
@@ -39,7 +41,7 @@ const loadPlaylist = async (endpoint, elementId) => {
         playlistItem.className = "flex flex-col gap-1 justify-center px-2 rounded-lg hover:bg-light-black hover:cursor-pointer duration-200";
         playlistItem.id = id;
         playlistItem.setAttribute("data-type", "playlist");
-        playlistItem.addEventListener("click", onPlaylistItemClicked);
+        playlistItem.addEventListener("click", (event) => onPlaylistItemClicked(event, id));
         playlistItem.innerHTML = `
             <img class="object-cover mb-2 rounded" src="${image}" alt="Playlist">
             <header>
@@ -61,7 +63,6 @@ const fillDashboardContent = () => {
     const pageContent = document.querySelector("#page-content");
     const playlistMap = new Map([["featured", "featured-playlists"], ["toplists", "toplists-playlists"]]);
     let innerHTMLString = ``;
-    console.log(playlistMap)
     for (let [type, id] of playlistMap) {
         innerHTMLString += `
         <section id="${type}-container" class="p-4">
@@ -76,10 +77,32 @@ const fillDashboardContent = () => {
     pageContent.innerHTML = innerHTMLString;
 }
 
+const loadSection = (section) => {
+    if (section.type == SECTIONTYPE.DASHBOARD) {
+        fillDashboardContent();
+        loadPlaylists();
+    } else if (section.type == SECTIONTYPE.PLAYLIST) {
+        fillPlaylistContent(section.playlist);
+    }
+}
+
+const fillPlaylistContent = async (playlistId) => {
+    const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistId}`);
+    console.log(await playlist);
+    const { description, followers, images, name, tracks } = playlist;
+    const following = followers.total;
+    const playlistImage = images[0].url;
+    for (let track of tracks) {
+
+    }
+
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadUserProfile();
-    fillDashboardContent();
-    loadPlaylists();
+    const section = { type: SECTIONTYPE.DASHBOARD };
+    history.pushState(section, "", "");
+    loadSection(section);
     document.addEventListener('click', () => {
         const profileMenu = document.querySelector("#profile-menu");
         if (!profileMenu.classList.contains("hidden")) {
@@ -97,5 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
             header.classList.remove("sticky", "top-0", "bg-black");
             header.classList.add("bg-transparent");
         }
+    })
+    window.addEventListener("popstate", (event) => {
+        loadSection(event.state);
     })
 })
