@@ -31,8 +31,8 @@ const loadUserProfile = async (event) => {
     profileBtn.addEventListener('click', onProfileButtonClicked);
 }
 
-const loadFeaturedPlaylist = async () => {
-    const { playlists: { items } } = await fetchRequest(ENDPOINT.featuredPlaylist);
+const loadPlaylist = async (endpoint, elementId) => {
+    const { playlists: { items } } = await fetchRequest(endpoint);
     for (let { name, description, images, id } of items) {
         const [{ url: image }] = images;
         const playlistItem = document.createElement("article");
@@ -44,22 +44,58 @@ const loadFeaturedPlaylist = async () => {
             <img class="object-cover mb-2 rounded" src="${image}" alt="Playlist">
             <header>
                 <h2 class="font-semibold text-sm">${name}</h2>
-                <p class="text-xs truncate">${description}</p>
+                <p class="text-xs truncate line-clamp-2 opacity-50">${description}</p>
             </header>
         `;
-        document.querySelector(".featured-songs").appendChild(playlistItem);
+        document.querySelector(`#${elementId}`).appendChild(playlistItem);
     }
 
 }
 
+const loadPlaylists = () => {
+    loadPlaylist(ENDPOINT.featuredPlaylist, "featured-playlists");
+    loadPlaylist(ENDPOINT.toplists, "toplists-playlists");
+}
+
+const fillDashboardContent = () => {
+    const pageContent = document.querySelector("#page-content");
+    const playlistMap = new Map([["featured", "featured-playlists"], ["toplists", "toplists-playlists"]]);
+    let innerHTMLString = ``;
+    console.log(playlistMap)
+    for (let [type, id] of playlistMap) {
+        innerHTMLString += `
+        <section id="${type}-container" class="p-4">
+            <header>
+                <h1 class="text-2xl font-bold capitalize">${type}</h1>
+            </header>
+            <div id="${id}" class="grid grid-cols-auto-fill-cards gap-4 px-2 mt-2">
+            </div>
+        </section>
+        `;
+    }
+    pageContent.innerHTML = innerHTMLString;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadUserProfile();
-    loadFeaturedPlaylist();
+    fillDashboardContent();
+    loadPlaylists();
     document.addEventListener('click', () => {
         const profileMenu = document.querySelector("#profile-menu");
         if (!profileMenu.classList.contains("hidden")) {
             profileMenu.classList.add("hidden");
         }
 
+    })
+    document.querySelector("#content").addEventListener("scroll", (event) => {
+        const { scrollTop } = event.target;
+        const header = document.querySelector("#content-nav");
+        if (scrollTop >= header.offsetHeight) {
+            header.classList.add("sticky", "top-0", "bg-black");
+            header.classList.remove("bg-transparent");
+        } else {
+            header.classList.remove("sticky", "top-0", "bg-black");
+            header.classList.add("bg-transparent");
+        }
     })
 })

@@ -78,8 +78,9 @@
                 <!-- List of playlists is appended here -->
             </div>
         </aside>
-        <section class="content h-full w-full">
-            <nav class="w-full h-[8vh] bg-transparent flex justify-between items-center px-[2rem] py-[0.5rem]">
+        <section id="content" class="overflow-auto h-full w-full">
+            <nav id="content-nav"
+                class="duration-200 w-full h-[8vh] bg-transparent flex justify-between items-center px-[2rem] py-[0.5rem]">
                 <div class="grid grid-cols-[1fr_1fr] place-items-center w-[10vw]">
                     <button class="group p-[0.5rem] border-2 rounded-full"><svg xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -115,13 +116,7 @@
                     </ul>
                 </div>
             </nav>
-            <div class="featured-container p-4">
-                <header>
-                    <h1 class="text-2xl font-bold">Featured Playlists</h1>
-                </header>
-                <div class="featured-songs grid grid-cols-auto-fill-cards gap-4 px-2 mt-2">
-
-                </div>
+            <div id="page-content" class=" h-full w-full flex flex-col">
             </div>
         </section>
         <footer class="player bg-green h-full w-full">
