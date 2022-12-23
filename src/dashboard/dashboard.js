@@ -98,6 +98,9 @@ const loadSection = (section) => {
 const onPageContentScroll = (event) => {
     const { scrollTop } = event.target;
     const header = document.querySelector("#content-nav");
+    const pageContent = document.querySelector("#page-content");
+    const playlistBanner = document.querySelector("#playlist-banner")
+
     if (scrollTop >= header.offsetHeight) {
         header.classList.add("sticky", "top-0", "bg-black");
         header.classList.remove("bg-transparent");
@@ -107,8 +110,17 @@ const onPageContentScroll = (event) => {
     }
     if (history.state.type === SECTIONTYPE.PLAYLIST) {
         const playlistHeader = document.querySelector("#playlist-header");
-        if (scrollTop >= playlistHeader.offsetHeight) {
-            playlistHeader.classList.add("sticky", `top-[${header.offsetHeight}px]`)
+        const headerList = document.querySelector("#playlist-header ul");
+        if (scrollTop >= (header.offsetHeight + playlistBanner.offsetHeight - playlistHeader.offsetHeight)) {
+            playlistHeader.classList.add("sticky", "w-full", "px-4", "opacity-80", "bg-gray-800");
+            headerList.classList.add("px-3");
+            playlistHeader.classList.remove("opacity-50", "mx-4", "w-[80vw]");
+            playlistHeader.style.top = `${header.offsetHeight}px`;
+        } else {
+            playlistHeader.classList.remove("sticky", "w-full", "px-4", "opacity-80", "bg-gray-800");
+            headerList.classList.remove("px-3");
+            playlistHeader.classList.add("opacity-50", "mx-4", "w-[80vw]");
+            playlistHeader.style.top = `revert`;
         }
     }
 }
@@ -118,7 +130,7 @@ const fillPlaylistContent = async (playlistId) => {
     const pageContent = document.querySelector("#page-content");
     pageContent.innerHTML = `
     <section id="playlist-container" class="flex flex-col items-center h-full w-full">
-        <div class="playlist-poster grid grid-cols-[0.5fr_1.5fr] w-full">
+        <div id="playlist-banner" class="grid grid-cols-[0.5fr_1.5fr] w-full">
             <div class="poster-wrapper h-full grid place-items-center">
                 <img class="object-contain h-full" src="--" alt="playlist-theme">
             </div>
@@ -150,15 +162,15 @@ const fillPlaylistContent = async (playlistId) => {
                 </button>
             </div>
         </div>
-        <header class="px-4 pb-2 w-full mt-[2rem]">
-            <ul id="playlist-header" class="grid justify-items-start opacity-50 grid-cols-[50px_2fr_1fr_50px] font-semibold">
+        <header id="playlist-header" class="mx-4 z-10 py-4 px-2 border-b-[0.5px] opacity-50 border-white w-[80vw] mt-[2rem] duration-200">
+            <ul class="grid justify-items-start grid-cols-[50px_1fr_1fr_50px] font-semibold">
                 <li class="justify-self-center">#</li>
                 <li>Title</li>
                 <li>Album</li>
                 <li>🕧</li>
             </ul>
         </header>
-        <div id="tracks-container" class="w-full h-full">
+        <div id="tracks-container" class="w-[80vw] h-full">
 
         </div>
     </section>
@@ -172,28 +184,52 @@ const loadPlaylistTracks = ({ tracks }) => {
     const trackContainer = document.querySelector("#tracks-container");
     let counter = 1;
     for (let trackItem of tracks.items) {
-        const { id, artists, name, album, duration_ms: duration } = trackItem.track;
+        const { id, artists, name, album, duration_ms: duration, preview_url: previewUrl } = trackItem.track;
         const trackNode = document.createElement("article");
         trackNode.id = id;
-        trackNode.className = "px-4 py-2 rounded-md my-2 w-full grid grid-cols-[50px_2fr_1fr_50px] hover:bg-gray-600 hover:cursor-pointer";
+        trackNode.className = "track group py-2 rounded-md my-2 w-full items-center grid grid-cols-[50px_1fr_1fr_50px] hover:bg-gray-600 hover:cursor-pointer";
         const image = album.images.find(img => img.height === 64);
+        const trackArtists = Array.from(artists, artist => artist.name).join(", ");
         trackNode.innerHTML = `
-        <p class="justify-self-center">${counter++}</p>
+        <p class="text-xs relative flex justify-center items-center"><span class="group-hover:invisible">${counter++}</span></p>
         <div class="track-info w-full h-full flex gap-1 items-start justify-items-start">
             <div class="track-img-wrapper h-full">
                 <img class="h-[50px] w-[50px]" src="${image.url}" alt="${name}">
             </div>
             <div class="track-details">
-                <h2 id="track-title" class="text-xl">${name}</h2>
-                <p id="artists" class="text-sm opacity-60">${Array.from(artists, artist => artist.name).join(", ")}</p>
+                <h2 class="text-sm line-clamp-1">${name}</h2>
+                <p class="text-xs opacity-60 line-clamp-1">${trackArtists}</p>
             </div>
         </div>
-        <p>${album.name}</p>
-        <p class="opacity-60">${formatDuration(duration)}</p>
+        <p class="text-sm">${album.name}</p>
+        <p class="opacity-60 text-sm">${formatDuration(duration)}</p>
         `;
+        trackNode.addEventListener("click", (event) => onTrackSelection(event, id));
+        const playBtn = document.createElement("button");
+        playBtn.id = `play-tract-${id}`;
+        playBtn.className = `play absolute left-0 text-lg w-full invisible group-hover:visible`;
+        playBtn.innerHTML = "▶️";
+        playBtn.addEventListener("click", (event) => onPlayTrack(event, { image, trackArtists, name, previewUrl, duration, id }));
+        trackNode.querySelector("p").appendChild(playBtn);
         trackContainer.appendChild(trackNode);
     }
 
+}
+
+const onPlayTrack = (event, { image, trackArtists, name, previewUrl, duration, id }) => {
+    console.log(image, trackArtists, name, previewUrl, duration, id);
+}
+
+const onTrackSelection = (event, id) => {
+    document.querySelectorAll("#tracks-container .track").forEach(trackItem => {
+        if (trackItem.id === id) {
+            trackItem.classList.add("bg-gray-600", "focus");
+            trackItem.querySelector("p .play").classList.remove("invisible");
+        } else {
+            trackItem.classList.remove("bg-gray-600", "selected");
+            trackItem.querySelector("p .play").classList.add("invisible");
+        }
+    })
 }
 
 document.addEventListener("DOMContentLoaded", () => {
