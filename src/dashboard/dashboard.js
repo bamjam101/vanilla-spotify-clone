@@ -1,6 +1,18 @@
 import { fetchRequest } from "../api";
 import { ENDPOINT, logout, SECTIONTYPE } from "../common";
 
+// const controller = new AbortController();
+// const { signal } = controller;
+
+const audio = new Audio();
+const volune = document.querySelector("#volume");
+const playBtn = document.querySelector("#play-audio");
+const trackDuration = document.querySelector("#track-duration");
+const completedPlayingDuration = document.querySelector("#track-duration-completed")
+const trackProgress = document.querySelector("#progress");
+
+let progressInterval;
+
 const formatDuration = (duration) => {
     const min = Math.floor(duration / 60000);
     const sec = ((duration % 6000) / 1000).toFixed(0);
@@ -53,7 +65,7 @@ const loadPlaylist = async (endpoint, elementId) => {
             <img class="object-cover mb-2 rounded" src="${image}" alt="Playlist">
             <header>
                 <h2 class="font-semibold text-sm">${name}</h2>
-                <p class="text-xs truncate line-clamp-2 opacity-50">${description}</p>
+                <p class="text-xs line-clamp-2 opacity-50">${description}</p>
             </header>
         `;
         document.querySelector(`#${elementId}`).appendChild(playlistItem);
@@ -98,10 +110,9 @@ const loadSection = (section) => {
 const onPageContentScroll = (event) => {
     const { scrollTop } = event.target;
     const header = document.querySelector("#content-nav");
-    const pageContent = document.querySelector("#page-content");
     const playlistBanner = document.querySelector("#playlist-banner")
 
-    if (scrollTop >= header.offsetHeight) {
+    if (scrollTop >= (header.offsetHeight / 2)) {
         header.classList.add("sticky", "top-0", "bg-black");
         header.classList.remove("bg-transparent");
     } else {
@@ -110,16 +121,15 @@ const onPageContentScroll = (event) => {
     }
     if (history.state.type === SECTIONTYPE.PLAYLIST) {
         const playlistHeader = document.querySelector("#playlist-header");
-        const headerList = document.querySelector("#playlist-header ul");
-        if (scrollTop >= (header.offsetHeight + playlistBanner.offsetHeight - playlistHeader.offsetHeight)) {
-            playlistHeader.classList.add("sticky", "w-full", "px-4", "opacity-80", "bg-gray-800");
-            headerList.classList.add("px-3");
-            playlistHeader.classList.remove("opacity-50", "mx-4", "w-[80vw]");
+        if (scrollTop >= (header.offsetHeight + playlistBanner.offsetHeight - (playlistHeader.offsetHeight))) {
+            playlistHeader.classList.add("sticky", "px-2", "opacity-80", "bg-gray-800");
+            // headerList.classList.add("px-3");
+            playlistHeader.classList.remove("opacity-50", "mx-2");
             playlistHeader.style.top = `${header.offsetHeight}px`;
         } else {
-            playlistHeader.classList.remove("sticky", "w-full", "px-4", "opacity-80", "bg-gray-800");
-            headerList.classList.remove("px-3");
-            playlistHeader.classList.add("opacity-50", "mx-4", "w-[80vw]");
+            playlistHeader.classList.remove("sticky", "px-2", "opacity-80", "bg-gray-800");
+            // headerList.classList.add("px-3");
+            playlistHeader.classList.add("opacity-50", "mx-2");
             playlistHeader.style.top = `revert`;
         }
     }
@@ -129,15 +139,15 @@ const fillPlaylistContent = async (playlistId) => {
     const playlist = await fetchRequest(`${ENDPOINT.playlist}/${playlistId}`);
     const pageContent = document.querySelector("#page-content");
     pageContent.innerHTML = `
-    <section id="playlist-container" class="flex flex-col items-center h-full w-full">
-        <div id="playlist-banner" class="grid grid-cols-[0.5fr_1.5fr] w-full">
-            <div class="poster-wrapper h-full grid place-items-center">
+    <section id="playlist-container" class="w-full">
+        <div id="playlist-banner" class="grid grid-cols-[0.5fr_1.5fr] w-full h-[30vh] overflow-hidden">
+            <div class="poster-wrapper h-[25vh] w-[25vh] grid place-items-center">
                 <img class="object-contain h-full" src="--" alt="playlist-theme">
             </div>
             <div class="playlist-info flex flex-col gap-1 justify-center items-start">
                 <p class="content-type font-semibold">Playlist</p>
                 <header>
-                    <h1 id="playlist-title" class="text-6xl font-bold capitalize">Playlist Name</h1>
+                    <h1 id="playlist-title" class="text-4xl font-bold capitalize">Playlist Name</h1>
                 </header>
                 <div class="desc mt-5">
                     <p id="playlist-desc">Description for playlist</p>
@@ -162,7 +172,7 @@ const fillPlaylistContent = async (playlistId) => {
                 </button>
             </div>
         </div>
-        <header id="playlist-header" class="mx-4 z-10 py-4 px-2 border-b-[0.5px] opacity-50 border-white w-[80vw] mt-[2rem] duration-200">
+        <header id="playlist-header" class="mx-2 z-10 py-4 border-b-[0.5px] opacity-50 border-white mt-[2rem] duration-200">
             <ul class="grid justify-items-start grid-cols-[50px_1fr_1fr_50px] font-semibold">
                 <li class="justify-self-center">#</li>
                 <li>Title</li>
@@ -170,7 +180,7 @@ const fillPlaylistContent = async (playlistId) => {
                 <li>🕧</li>
             </ul>
         </header>
-        <div id="tracks-container" class="w-[80vw] h-full">
+        <div id="tracks-container" class="w-full h-full px-2">
 
         </div>
     </section>
@@ -191,7 +201,7 @@ const loadPlaylistTracks = ({ tracks }) => {
         const image = album.images.find(img => img.height === 64);
         const trackArtists = Array.from(artists, artist => artist.name).join(", ");
         trackNode.innerHTML = `
-        <p class="text-xs relative flex justify-center items-center"><span class="group-hover:invisible">${counter++}</span></p>
+        <p class="text-xs relative flex justify-center items-center"><span id="track-number" class="group-hover:invisible">${counter++}</span></p>
         <div class="track-info w-full h-full flex gap-1 items-start justify-items-start">
             <div class="track-img-wrapper h-full">
                 <img class="h-[50px] w-[50px]" src="${image.url}" alt="${name}">
@@ -206,9 +216,9 @@ const loadPlaylistTracks = ({ tracks }) => {
         `;
         trackNode.addEventListener("click", (event) => onTrackSelection(event, id));
         const playBtn = document.createElement("button");
-        playBtn.id = `play-tract-${id}`;
-        playBtn.className = `play absolute left-0 text-lg w-full invisible group-hover:visible`;
-        playBtn.innerHTML = "▶️";
+        playBtn.id = `play-track-${id}`;
+        playBtn.className = `play absolute left-0 w-full invisible group-hover:visible`;
+        playBtn.innerHTML = `<span class="material-symbols-outlined">play_arrow</span>`;
         playBtn.addEventListener("click", (event) => onPlayTrack(event, { image, trackArtists, name, previewUrl, duration, id }));
         trackNode.querySelector("p").appendChild(playBtn);
         trackContainer.appendChild(trackNode);
@@ -216,26 +226,76 @@ const loadPlaylistTracks = ({ tracks }) => {
 
 }
 
-const onPlayTrack = (event, { image, trackArtists, name, previewUrl, duration, id }) => {
-    console.log(image, trackArtists, name, previewUrl, duration, id);
+const onAudioReady = (id) => {
+    trackDuration.innerHTML = `0:${audio.duration.toFixed(0)}`;
+    setTrackPlayMode(id);
+}
+
+const setTrackPlayMode = (id) => {
+    playBtn.querySelector("span").innerHTML = `<span class="material-symbols-outlined">pause_circle</span>`;
+    const playButtonFromTracks = document.querySelector(`#play-track-${id}`);
+    playButtonFromTracks.innerHTML = `<span class="material-symbols-outlined">pause</span>`;
+}
+
+const onPlayButtonClick = (id) => {
+    if (audio.paused) {
+        audio.play();
+        setTrackPlayMode(id);
+    } else {
+        audio.pause();
+        playBtn.querySelector("span").innerHTML = `<span class="material-symbols-outlined">play_circle</span>`;
+        const playButtonFromTracks = document.querySelector(`#play-track-${id}`);
+        playButtonFromTracks.innerHTML = `<span class="material-symbols-outlined">play_arrow</span>`;
+    }
+}
+
+const onPlayTrack = (event, { image, trackArtists, name, previewUrl, id }) => {
+    const trackImg = document.querySelector("#playing-track-image");
+    trackImg.setAttribute("src", image.url);
+    const trackName = document.querySelector("#playing-track-name");
+    trackName.innerHTML = name;
+    const artists = document.querySelector("#playing-track-artists");
+    artists.innerHTML = trackArtists;
+
+    audio.src = previewUrl;
+    setInterval(() => {
+        if (audio.paused) {
+            return
+        }
+        completedPlayingDuration.innerHTML = `0:${Math.floor(audio.currentTime.toFixed(0))}`;
+        trackProgress.style.width = `${((audio.currentTime / audio.duration) * 100) + 0.1}%`;
+    }, 100);
+    // controller.abort();
+
+    audio.removeEventListener("loadedmetadata", () => onAudioReady(id));
+    audio.addEventListener("loadedmetadata", () => onAudioReady(id));
+    playBtn.addEventListener("click", () => onPlayButtonClick(id));
+    audio.play();
 }
 
 const onTrackSelection = (event, id) => {
     document.querySelectorAll("#tracks-container .track").forEach(trackItem => {
         if (trackItem.id === id) {
-            trackItem.classList.add("bg-gray-600", "focus");
+            trackItem.classList.add("bg-gray-600");
+            trackItem.querySelector("p span").classList.add("invisible");
             trackItem.querySelector("p .play").classList.remove("invisible");
         } else {
             trackItem.classList.remove("bg-gray-600", "selected");
             trackItem.querySelector("p .play").classList.add("invisible");
+            trackItem.querySelector("p span").classList.remove("invisible");
         }
     })
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    const volume = document.querySelector("#volume");
+    const timeline = document.querySelector("#timeline");
     loadUserProfile();
-    const section = { type: SECTIONTYPE.DASHBOARD };
-    history.pushState(section, "", "");
+    // const section = { type: SECTIONTYPE.DASHBOARD };
+    // history.pushState(section, "", "");
+    const section = { type: SECTIONTYPE.PLAYLIST, playlist: "37i9dQZF1DX4ghkRUdIogy" };
+    history.pushState(section, "", `dashboard/playlist/${section.playlist}`);
+
     loadSection(section);
     document.addEventListener('click', () => {
         const profileMenu = document.querySelector("#profile-menu");
@@ -243,6 +303,18 @@ document.addEventListener("DOMContentLoaded", () => {
             profileMenu.classList.add("hidden");
         }
 
+    })
+
+    volume.addEventListener("change", () => {
+        audio.volume = volume.value / 100;
+    })
+
+    timeline.addEventListener("click", (event) => {
+        console.log("timeline clicked")
+        const timelineWidth = window.getComputedStyle(timeline).width;
+        const timeToSeek = (event.offsetX / parseInt(timelineWidth)) * audio.duration;
+        audio.currentTime = timeToSeek;
+        trackProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`
     })
 
     window.addEventListener("popstate", (event) => {
