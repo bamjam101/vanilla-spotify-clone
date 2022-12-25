@@ -281,13 +281,14 @@ const playTrackHighlight = (id) => {
 const playTrack = (event, { image, trackArtists, name, previewUrl, id }) => {
     playTrackHighlight(id);
     if (event?.stopPropagation) {
+
         event.stopPropagation();
     }
     if (audio.src === previewUrl) {
         toggleAudioState(event);
     } else {
         setNowPlayingTrackInfo({ image, id, name, trackArtists })
-        playBtn.addEventListener("click", () => toggleAudioState(event));
+        playBtn.addEventListener("click", (event) => toggleAudioState(event));
         audio.src = previewUrl;
         audio.play();
     }
@@ -353,10 +354,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let progressInterval;
     loadUserProfile();
-    // const section = { type: SECTIONTYPE.DASHBOARD };
-    // history.pushState(section, "", "");
-    const section = { type: SECTIONTYPE.PLAYLIST, playlist: "37i9dQZF1DX4ghkRUdIogy" };
-    history.pushState(section, "", `dashboard/playlist/${section.playlist}`);
+    const section = { type: SECTIONTYPE.DASHBOARD };
+    history.pushState(section, "", "");
+    // const section = { type: SECTIONTYPE.PLAYLIST, playlist: "37i9dQZF1DX4ghkRUdIogy" };
+    // history.pushState(section, "", `dashboard/playlist/${section.playlist}`);
 
     loadSection(section);
     document.addEventListener('click', () => {
