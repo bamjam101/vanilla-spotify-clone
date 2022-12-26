@@ -226,7 +226,7 @@ const loadPlaylistTracks = ({ tracks }, playlistId) => {
         playButtonForTrackNode.id = `play-track-${id}`;
         playButtonForTrackNode.className = `play absolute left-0 w-full invisible group-hover:visible`;
         playButtonForTrackNode.innerHTML = `<span class="material-symbols-outlined">play_arrow</span>`;
-        playButtonForTrackNode.setAttribute("data-track", "default");
+        playButtonForTrackNode.setAttribute("data-track", "paused");
         playButtonForTrackNode.addEventListener("click", (event) => playTrack(event, loadedTracks, { image, trackArtists, name, previewUrl, id }));
         trackNode.querySelector("p").appendChild(playButtonForTrackNode);
         trackContainer.appendChild(trackNode);
@@ -286,29 +286,51 @@ const playTrackHighlight = (id) => {
     })
 }
 
-const configTrackPlayMode = (fetechedTracks, { id, image, name, trackArtists, previewUrl }) => {
-    const selectedTrack = document.querySelector(`#play-track-${id}`);
-    for (let track of fetechedTracks) {
-        if (track.id === id) {
-            if (audio.src === previewUrl) {
-                const status = selectedTrack.getAttribute("data-track");
+const configTrackPlayMode = (currentTrackIndex, fetechedTracks, { id, image, name, trackArtists, previewUrl }) => {
+    if (currentTrackIndex) {
+        let index = 0;
+        for (let track of fetechedTracks) {
+            const trackItem = document.querySelector(`#play-track-${id}`);
+            const status = trackItem.querySelector("p span");
+
+            if (index === currentTrackIndex) {
+                const { id, image, name, trackArtists, previewUrl } = track;
+                audio.src = previewUrl;
+                trackItem.querySelector("p span").setAttribute("data-track", "playing");
+                setNowPlayingTrackInfo({ image, id, name, trackArtists });
+                playTrackHighlight(id);
+                trackIndex = { currentTrackIndex, fetechedTracks };
+                audio.play();
+            } else {
+                status.setAttribute("data-track", "paused");
+            }
+            index++;
+        }
+    } else {
+
+        const selectedTrack = document.querySelector(`#play-track-${id}`);
+        for (let track of fetechedTracks) {
+            if (track.id === id) {
+                if (audio.src === previewUrl) {
+                    const status = selectedTrack.getAttribute("data-track");
 
 
-                if (status === "playing") {
-                    selectedTrack.setAttribute("data-track", "pause");
-                    audio.pause();
+                    if (status === "playing") {
+                        selectedTrack.setAttribute("data-track", "pause");
+                        audio.pause();
+                    } else {
+                        selectedTrack.setAttribute("data-track", "playing");
+                        audio.play();
+                    }
                 } else {
+                    audio.src = previewUrl;
+                    const currentTrackIndex = fetechedTracks?.findIndex(track => track.id === id);
+                    trackIndex = { currentTrackIndex, fetechedTracks };
+                    setNowPlayingTrackInfo({ image, id, name, trackArtists });
                     selectedTrack.setAttribute("data-track", "playing");
+                    playTrackHighlight(id);
                     audio.play();
                 }
-            } else {
-                audio.src = previewUrl;
-                const currentTrackIndex = fetechedTracks?.findIndex(track => track.id === id);
-                trackIndex = { currentTrackIndex, fetechedTracks };
-                setNowPlayingTrackInfo({ image, id, name, trackArtists });
-                selectedTrack.setAttribute("data-track", "playing");
-                playTrackHighlight(id);
-                audio.play();
             }
         }
     }
@@ -319,18 +341,18 @@ const playTrack = (event, loadedTracks, { image, trackArtists, name, previewUrl,
     const fetchLocalStorageTracks = getItemInLocalStorage(LOADED_TRACKS);
     if (fetchLocalStorageTracks) {
         if (fetchLocalStorageTracks[0].id === loadedTracks[0].id) {
-            configTrackPlayMode(fetchLocalStorageTracks, trackInfoObject);
+            configTrackPlayMode(null, fetchLocalStorageTracks, trackInfoObject);
         } else {
             localStorage.removeItem(LOADED_TRACKS);
             localStorage.setItem(LOADED_TRACKS, JSON.stringify(loadedTracks));
             const fetechedTracks = getItemInLocalStorage(LOADED_TRACKS);
-            configTrackPlayMode(fetechedTracks, trackInfoObject);
+            configTrackPlayMode(null, fetechedTracks, trackInfoObject);
 
         }
     } else {
         localStorage.setItem(LOADED_TRACKS, JSON.stringify(loadedTracks));
         const fetechedTracks = getItemInLocalStorage(LOADED_TRACKS);
-        configTrackPlayMode(fetechedTracks, trackInfoObject);
+        configTrackPlayMode(null, fetechedTracks, trackInfoObject);
     }
 }
 
@@ -360,31 +382,31 @@ const onTrackSelection = (id) => {
     })
 }
 
-// const playNextTrack = () => {
-//     const { currentTrackIndex = -1, fetechedTracks = null } = trackIndex;
-//     if (currentTrackIndex > -1 && currentTrackIndex < fetechedTracks.length - 1) {
-//         configTrackPlayMode(currentTrackIndex + 1, fetechedTracks, trackInfoObject);
-//     }
-// }
-
-// const playPreviousTrack = () => {
-//     const { currentTrackIndex = -1, fetechedTracks = null } = trackIndex;
-//     if (currentTrackIndex > 0) {
-//         configTrackPlayMode(currentTrackIndex - 1, fetechedTracks, trackInfoObject);
-//     }
-// }
-
-const getCurrentTrackIndex = () => {
-
-}
-
 const playNextTrack = () => {
-
+    const { currentTrackIndex = -1, fetechedTracks = null } = trackIndex;
+    if (currentTrackIndex > -1 && currentTrackIndex < fetechedTracks.length - 1) {
+        configTrackPlayMode(currentTrackIndex + 1, fetechedTracks, trackInfoObject);
+    }
 }
 
 const playPreviousTrack = () => {
-
+    const { currentTrackIndex = -1, fetechedTracks = null } = trackIndex;
+    if (currentTrackIndex > 0) {
+        configTrackPlayMode(currentTrackIndex - 1, fetechedTracks, trackInfoObject);
+    }
 }
+
+// const getCurrentTrackIndex = () => {
+
+// }
+
+// const playNextTrack = () => {
+
+// }
+
+// const playPreviousTrack = () => {
+
+// }
 
 const selectSidebarItem = (section) => {
     const selection = section.type;
@@ -467,10 +489,18 @@ document.addEventListener("DOMContentLoaded", () => {
     playBtn.addEventListener("click", () => {
         const activetrackId = audioControl.getAttribute("data-track-id");
         const selectedTrack = document.querySelector(`#play-track-${activetrackId}`);
-        selectedTrack.click()
+        try {
+            selectedTrack.click();
+        } catch (err) {
+            console.log(err);
+        }
     })
-    next.addEventListener("click", playNextTrack)
-    prev.addEventListener("click", playPreviousTrack)
+    try {
+        next.addEventListener("click", playNextTrack);
+        prev.addEventListener("click", playPreviousTrack);
+    } catch (err) {
+        console.log(err);
+    }
 
     window.addEventListener("popstate", (event) => {
         loadSection(event.state);
