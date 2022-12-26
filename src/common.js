@@ -10,7 +10,9 @@ export const ENDPOINT = {
     userInfo: "me",
     featuredPlaylist: "browse/featured-playlists?limit=5",
     toplists: "browse/categories/toplists/playlists?limit=10",
-    playlist: "playlists"
+    playlist: "playlists",
+    library: "me/albums",
+    search: "search"
 }
 
 export const logout = () => {
@@ -25,5 +27,7 @@ export const getItemInLocalStorage = (key) => JSON.parse(localStorage.getItem(ke
 
 export const SECTIONTYPE = {
     DASHBOARD: "DASHBOARD",
-    PLAYLIST: "PLAYLIST"
+    PLAYLIST: "PLAYLIST",
+    LIBRARY: "LIBRARY",
+    SEARCH: "SEARCH"
 }
