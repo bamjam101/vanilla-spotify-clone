@@ -16,7 +16,7 @@
     <main class="grid-template-areas grid h-full grid-cols-[250px_1fr] grid-rows-[1fr_75px] place-items-center text-sm">
         <aside class="side-nav flex h-full w-full flex-col gap-[1rem] py-[8vh] px-[1rem]">
             <div class="flex flex-col items-center justify-center pb-[1rem]">
-                <a href="dashboard.html" id="dashboard-btn"
+                <a id="dashboard-btn"
                     class="group grid h-[6vh] w-full grid-cols-[0.4fr_1.6fr] place-items-start gap-[1rem] rounded-md p-[1rem] opacity-60 duration-200 hover:bg-gray-600 hover:opacity-100">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="h-[1.4rem] w-[1.4rem] duration-200 group-hover:h-[1.3rem]">
@@ -26,7 +26,7 @@
 
                     <h3 class="font-bold">Home</h3>
                 </a>
-                <a href="search.html" id="search-btn"
+                <a style="pointer-events: none;" id="search-btn"
                     class="group grid h-[6vh] w-full grid-cols-[0.4fr_1.6fr] place-items-start gap-[1rem] rounded-md p-[1rem] opacity-60 duration-200 hover:bg-gray-600 hover:opacity-100">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="h-[1.4rem] w-[1.4rem] duration-200 group-hover:h-[1.3rem]">
@@ -36,7 +36,7 @@
 
                     <h3 class="font-bold">Search</h3>
                 </a>
-                <a href="library.html" id="library-btn"
+                <a style="pointer-events: none;" id="library-btn"
                     class="group grid h-[6vh] w-full grid-cols-[0.4fr_1.6fr] place-items-start gap-[1rem] rounded-md p-[1rem] opacity-60 duration-200 hover:bg-gray-600 hover:opacity-100">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="h-[1.4rem] w-[1.4rem] duration-200 group-hover:h-[1.3rem]">
@@ -47,7 +47,7 @@
                     <h3 class="text-left font-bold">Your Library</h3>
                 </a>
             </div>
-            <div class="flex flex-col items-start justify-center pb-[1rem]">
+            <div style="pointer-events: none;" class="flex flex-col items-start justify-center pb-[1rem]">
                 <header class="px-[1rem]">
                     <h2 class="font-bold">PLAYLISTS</h2>
                 </header>
@@ -72,7 +72,8 @@
                     <h3 class="font-bold">Liked Songs</h3>
                 </button>
             </div>
-            <div id="recommended-playlists" class="mx-1rem flex flex-col items-center justify-center border-t-2 pt-4">
+            <div id="recommended-playlists"
+                class="mx-1rem flex pointer-events-none flex-col items-center justify-center border-t-2 pt-4">
                 <button class="h-[5vh] w-full p-[1rem] text-start capitalize">
                     <h3 class="opacity-80">Chill Hits</h3>
                 </button>
@@ -84,7 +85,7 @@
             <nav id="content-nav"
                 class="z-20 flex h-[8vh] w-full items-center justify-between px-[2rem] py-[0.5rem] duration-200">
                 <div class="grid w-[10vw] grid-cols-[1fr_1fr] place-items-center">
-                    <button class="group rounded-full border-2 p-[0.5rem]">
+                    <button class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
                             class="h-[1.3rem] w-[1.3rem] duration-200 group-hover:h-[1.4rem] group-hover:w-[1.4rem]">
@@ -92,7 +93,7 @@
                         </svg>
                     </button>
 
-                    <button class="group rounded-full border-2 p-[0.5rem]">
+                    <button class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
                             class="h-[1.3rem] w-[1.3rem] duration-200 group-hover:h-[1.4rem] group-hover:w-[1.4rem]">

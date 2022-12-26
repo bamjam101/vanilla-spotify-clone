@@ -137,7 +137,7 @@ const fillPlaylistContent = async (playlistId) => {
             
         </div>
         <div class="playlist-controls grid grid-cols-[1fr_1fr] h-[5vh] place-items-center">
-            <button id="play" class="group rounded-full p-2 bg-green text-black">
+            <button id="play" class="group rounded-full p-2 bg-green text-black pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                     class="h-[2rem] w-[2rem] group-hover:h-[2.1rem] group-hover:w-[2.1rem] duration-200">
                     <path fill-rule="evenodd"
@@ -145,7 +145,7 @@ const fillPlaylistContent = async (playlistId) => {
                         clip-rule="evenodd" />
                 </svg>
             </button>
-            <button id="like-playlist" class="group rounded-full p-1">
+            <button id="like-playlist" class="group rounded-full p-1 pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor"
                     class="h-[2rem] opacity-50 w-[2rem] group-hover:h-[2.1rem] group-hover:w-[2.1rem] group-hover:opacity-100 duration-200">
@@ -252,19 +252,6 @@ const setTrackPauseMode = (id) => {
     const playButtonFromTracks = document.querySelector(`#play-track-${id}`);
     if (playButtonFromTracks) {
         playButtonFromTracks.innerHTML = `<span class="material-symbols-outlined">play_arrow</span>`;
-    }
-}
-
-const toggleAudioState = (id, loadedTracks) => {
-    for (let track of loadedTracks) {
-        const trackId = track.querySelector("p button").id;
-    }
-    if (audio.src) {
-        if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
     }
 }
 
@@ -396,18 +383,6 @@ const playPreviousTrack = () => {
     }
 }
 
-// const getCurrentTrackIndex = () => {
-
-// }
-
-// const playNextTrack = () => {
-
-// }
-
-// const playPreviousTrack = () => {
-
-// }
-
 const selectSidebarItem = (section) => {
     const selection = section.type;
     const dashboardButton = document.querySelector("#dashboard-btn");
@@ -417,10 +392,10 @@ const selectSidebarItem = (section) => {
         dashboardButton.setAttribute("href", `${CURRENT_URL}/dashboard/dashboard.html`);
         select(dashboardButton);
     } else if (selection === "SEARCH") {
-        dashboardButton.setAttribute("href", `${CURRENT_URL}/search/search.html`);
+        dashboardButton.setAttribute("href", `${CURRENT_URL}/search`);
         select(searchButton);
     } else {
-        dashboardButton.setAttribute("href", `${CURRENT_URL}/library/library.html`);
+        dashboardButton.setAttribute("href", `${CURRENT_URL}/library`);
         select(libraryButton);
     }
 }
@@ -443,8 +418,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const section = { type: SECTIONTYPE.DASHBOARD };
     selectSidebarItem(section);
     history.pushState(section, "", "");
-    // const section = { type: SECTIONTYPE.PLAYLIST, playlist: "37i9dQZF1DX4ghkRUdIogy" };
-    // history.pushState(section, "", `dashboard/playlist/${section.playlist}`);
 
     loadSection(section);
     document.addEventListener('click', () => {
