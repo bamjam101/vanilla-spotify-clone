@@ -64,7 +64,6 @@ const loadPlaylist = async (endpoint, elementId) => {
         `;
         document.querySelector(`#${elementId}`).appendChild(playlistItem);
     }
-
 }
 
 const loadPlaylists = () => {
@@ -341,6 +340,8 @@ const configTrackPlayMode = (currentTrackIndex, fetechedTracks, { id, image, nam
 }
 
 const playTrack = (event, loadedTracks, { image, trackArtists, name, previewUrl, id }) => {
+    const trackInfo = document.querySelector("#track-info-display");
+    trackInfo.classList.remove("opacity-0");
     trackInfoObject = { id, image, name, trackArtists, previewUrl };
     // heremakechanges
     setItemInLocalStorage("TRACK_INFO", trackInfoObject);
@@ -503,5 +504,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("popstate", (event) => {
         loadSection(event.state);
-    })
+    });
 })

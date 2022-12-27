@@ -14,7 +14,10 @@
 
 <body class="h-screen bg-black text-white">
     <main class="grid-template-areas grid h-full grid-cols-[250px_1fr] grid-rows-[1fr_75px] place-items-center text-sm">
-        <aside class="side-nav flex h-full w-full flex-col gap-[1rem] py-[8vh] px-[1rem]">
+        <aside class="side-nav flex h-full w-full flex-col gap-[1rem] px-[1rem]">
+            <div class="spotify-logo mt-6 w-full pb-3">
+                <img class="w-full h-full object-contain" src="spotify-logo.png" alt="Spotify">
+            </div>
             <div class="flex flex-col items-center justify-center pb-[1rem]">
                 <a id="dashboard-btn"
                     class="group grid h-[6vh] w-full grid-cols-[0.4fr_1.6fr] place-items-start gap-[1rem] rounded-md p-[1rem] opacity-60 duration-200 hover:bg-gray-600 hover:opacity-100">
@@ -77,15 +80,13 @@
                 <button class="h-[5vh] w-full p-[1rem] text-start capitalize">
                     <h3 class="opacity-80">Chill Hits</h3>
                 </button>
-
-                <!-- List of playlists is appended here -->
             </div>
         </aside>
         <section id="content" class="h-full w-full overflow-auto">
             <nav id="content-nav"
                 class="z-20 flex h-[8vh] w-full items-center justify-between px-[2rem] py-[0.5rem] duration-200">
                 <div class="grid w-[10vw] grid-cols-[1fr_1fr] place-items-center">
-                    <button class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
+                    <button id="back-btn" class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
                             class="h-[1.3rem] w-[1.3rem] duration-200 group-hover:h-[1.4rem] group-hover:w-[1.4rem]">
@@ -93,7 +94,7 @@
                         </svg>
                     </button>
 
-                    <button class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
+                    <button id="forward-btn" class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
                             class="h-[1.3rem] w-[1.3rem] duration-200 group-hover:h-[1.4rem] group-hover:w-[1.4rem]">
@@ -125,11 +126,11 @@
         </section>
         <footer class="player border-t-1 h-full w-full border-t-light-black bg-light-black px-4 text-gray-300">
             <article id="player-container" class="grid h-full w-full grid-cols-[1fr_2fr_1fr] place-items-center">
-                <section class="grid grid-cols-[auto_1fr] place-content-center gap-4">
-                    <img id="playing-track-image" class="h-12 w-12 object-contain" src="../imgs/icon1.png" />
+                <section id="track-info-display" class="grid grid-cols-[auto_1fr] place-content-center gap-4 opacity-0">
+                    <img id="playing-track-image" class="h-12 w-12 object-contain" />
                     <div class="flex flex-col items-start justify-center">
                         <h2 id="playing-track-name" class="text-sm font-semibold text-white">
-                            Choose track
+
                         </h2>
                         <p id="playing-track-artists" class="text-xs"></p>
                     </div>
@@ -157,7 +158,7 @@
                 </section>
                 <section id="volume-controls" class="flex items-center justify-center gap-2 hover:text-white">
                     <span class="material-symbols-outlined">volume_up</span>
-                    <input id="volume" type="range" value="100" min="0" max="100" class="bg-green" />
+                    <input id="volume" type="range" value="100" min="0" max="100" class="bg-green cursor-pointer" />
                 </section>
             </article>
         </footer>
