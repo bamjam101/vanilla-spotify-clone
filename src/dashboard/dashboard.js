@@ -4,7 +4,6 @@ const CURRENT_URL = import.meta.env.VITE_APP_URL;
 
 const audio = new Audio();
 const playBtn = document.querySelector("#play-audio");
-
 let trackIndex;
 let trackInfoObject;
 
@@ -201,7 +200,6 @@ const loadPlaylistTracks = ({ tracks }, playlistId) => {
         const { id, artists, name, album, duration_ms: duration, preview_url: previewUrl } = trackItem.track;
         const trackNode = document.createElement("article");
         trackNode.id = id;
-        trackNode.setAttribute("data-playlist", playlistId)
         trackNode.className = "track group py-2 rounded-md my-2 w-full items-center grid grid-cols-[50px_1fr_1fr_50px] hover:bg-gray-600 hover:cursor-pointer";
         const image = album.images.find(img => img.height === 64);
         const trackArtists = Array.from(artists, artist => artist.name).join(", ");
@@ -278,44 +276,63 @@ const configTrackPlayMode = (currentTrackIndex, fetechedTracks, { id, image, nam
         let index = 0;
         for (let track of fetechedTracks) {
             const trackItem = document.querySelector(`#play-track-${id}`);
-            const status = trackItem.querySelector("p span");
-
+            const status = trackItem?.querySelector("p span");
             if (index === currentTrackIndex) {
                 const { id, image, name, trackArtists, previewUrl } = track;
-                audio.src = previewUrl;
-                trackItem.querySelector("p span").setAttribute("data-track", "playing");
-                setNowPlayingTrackInfo({ image, id, name, trackArtists });
-                playTrackHighlight(id);
-                trackIndex = { currentTrackIndex, fetechedTracks };
-                audio.play();
+                if (audio.src === previewUrl) {
+                    if (audio.paused) {
+                        audio.play();
+                    } else {
+                        audio.pause();
+                    }
+                } else {
+                    audio.src = previewUrl;
+                    if (status) {
+                        status.setAttribute("data-track", "playing");
+                        playTrackHighlight(id);
+                    }
+                    setNowPlayingTrackInfo({ image, id, name, trackArtists });
+                    trackIndex = { currentTrackIndex, fetechedTracks };
+                    audio.play();
+                }
             } else {
-                status.setAttribute("data-track", "paused");
+                if (status) {
+                    status.setAttribute("data-track", "paused");
+                }
             }
             index++;
         }
     } else {
 
-        const selectedTrack = document.querySelector(`#play-track-${id}`);
+        const selectedTrackButton = document.querySelector(`#play-track-${id}`);
         for (let track of fetechedTracks) {
             if (track.id === id) {
                 if (audio.src === previewUrl) {
-                    const status = selectedTrack.getAttribute("data-track");
-
-
-                    if (status === "playing") {
-                        selectedTrack.setAttribute("data-track", "pause");
-                        audio.pause();
+                    if (selectedTrackButton) {
+                        const status = selectedTrackButton.getAttribute("data-track");
+                        if (status === "playing") {
+                            selectedTrackButton.setAttribute("data-track", "pause");
+                            audio.pause();
+                        } else {
+                            selectedTrackButton.setAttribute("data-track", "playing");
+                            audio.play();
+                        }
                     } else {
-                        selectedTrack.setAttribute("data-track", "playing");
-                        audio.play();
+                        if (audio.paused) {
+                            audio.play();
+                        } else {
+                            audio.pause();
+                        }
                     }
                 } else {
                     audio.src = previewUrl;
                     const currentTrackIndex = fetechedTracks?.findIndex(track => track.id === id);
                     trackIndex = { currentTrackIndex, fetechedTracks };
                     setNowPlayingTrackInfo({ image, id, name, trackArtists });
-                    selectedTrack.setAttribute("data-track", "playing");
-                    playTrackHighlight(id);
+                    if (selectedTrackButton) {
+                        selectedTrackButton.setAttribute("data-track", "playing");
+                        playTrackHighlight(id);
+                    }
                     audio.play();
                 }
             }
@@ -325,6 +342,8 @@ const configTrackPlayMode = (currentTrackIndex, fetechedTracks, { id, image, nam
 
 const playTrack = (event, loadedTracks, { image, trackArtists, name, previewUrl, id }) => {
     trackInfoObject = { id, image, name, trackArtists, previewUrl };
+    // heremakechanges
+    setItemInLocalStorage("TRACK_INFO", trackInfoObject);
     const fetchLocalStorageTracks = getItemInLocalStorage(LOADED_TRACKS);
     if (fetchLocalStorageTracks) {
         if (fetchLocalStorageTracks[0].id === loadedTracks[0].id) {
@@ -367,6 +386,13 @@ const onTrackSelection = (id) => {
             trackItem.querySelector("p span").classList.remove("invisible");
         }
     })
+}
+
+const playCurrentTrack = () => {
+    const { currentTrackIndex = -1, fetechedTracks = null } = trackIndex;
+    if (currentTrackIndex > -1 && currentTrackIndex < fetechedTracks.length - 1) {
+        configTrackPlayMode(currentTrackIndex, fetechedTracks, trackInfoObject);
+    }
 }
 
 const playNextTrack = () => {
@@ -451,22 +477,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             completedTrackDuration.textContent = `0:${audio.currentTime.toFixed(0)}`;
             trackProgress.style.width = `${(audio.currentTime / audio.duration) * 100}%`
-        }, 100)
-
+        }, 100);
     })
 
     audio.addEventListener("pause", () => {
         const activeTrackId = audioControl.getAttribute("data-track-id");
+        if (progressInterval) {
+            clearInterval(progressInterval);
+        }
         setTrackPauseMode(activeTrackId);
     })
     playBtn.addEventListener("click", () => {
         const activetrackId = audioControl.getAttribute("data-track-id");
-        const selectedTrack = document.querySelector(`#play-track-${activetrackId}`);
-        try {
-            selectedTrack.click();
-        } catch (err) {
-            console.log(err);
-        }
+        const selectedTrackButton = document.querySelector(`#play-track-${activetrackId}`);
+        //currently playing track
+
+        playCurrentTrack();
     })
     try {
         next.addEventListener("click", playNextTrack);
