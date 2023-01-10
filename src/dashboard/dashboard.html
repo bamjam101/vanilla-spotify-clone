@@ -126,18 +126,22 @@
             <div id="page-content" class="-z-10 h-full w-full"></div>
         </section>
         <footer class="player border-t-1 h-full w-full border-t-light-black bg-light-black px-4 text-gray-300">
-            <article id="player-container" class="grid h-full w-full grid-cols-[1fr_2fr_1fr] place-items-center">
-                <section id="track-info-display" class="grid grid-cols-[auto_1fr] place-content-center gap-4 opacity-0">
+            <article id="player-container"
+                class="relative grid h-full w-full grid-cols-[2fr_1fr_0] gap-10 md:grid-cols-[1fr_2fr_1fr] place-items-start md:place-items-center">
+                <section id="track-info-display"
+                    class="grid grid-cols-[auto_1fr] h-full place-items-center gap-4 opacity-0">
                     <img id="playing-track-image" class="h-12 w-12 object-contain" />
                     <div class="flex flex-col items-start justify-center">
-                        <h2 id="playing-track-name" class="text-sm font-semibold text-white">
+                        <h2 id="playing-track-name"
+                            class="text-xs md:text-sm font-semibold text-white line-clamp-2 md:line-clamp-none">
 
                         </h2>
-                        <p id="playing-track-artists" class="text-xs"></p>
+                        <p id="playing-track-artists" class="text-xs line-clamp-1 md:line-clamp-none"></p>
                     </div>
                 </section>
                 <section id="audio-control" class="flex flex-col justify-center items-center w-full h-full">
-                    <div class="flex items-center justify-center gap-4 duration-200 text-2xl">
+                    <div
+                        class="flex items-center justify-center gap-4 duration-200 text-2xl absolute top-auto right-0 md:static">
                         <button id="prev-audio" class="hover:text-white flex justify-center items-baseline">
                             <span style="font-size: larger;" class="material-symbols-outlined"> skip_previous </span>
                         </button>
@@ -149,15 +153,16 @@
                         </button>
                     </div>
                     <div class="flex w-full items-center justify-center gap-2">
-                        <span id="track-duration-completed">0:00</span>
+                        <span id="track-duration-completed" class="hidden md:inline-block">0:00</span>
                         <section id="timeline"
-                            class="relative overflow-hidden h-1 w-full cursor-pointer rounded-3xl bg-gray-200 hover:bg-white">
-                            <div id="progress" class="h-1 absolute w-[0%] bg-green left-0 top-0"></div>
+                            class="bg-transparent md:relative overflow-hidden h-1 w-full cursor-pointer rounded-3xl md:bg-gray-200 hover:bg-white">
+                            <div id="progress" class="h-1 absolute w-[0%] bg-green left-0 bottom-0 md:top-0"></div>
                         </section>
-                        <span id="track-duration">0:00</span>
+                        <span id="track-duration" class="hidden md:inline-block">0:00</span>
                     </div>
                 </section>
-                <section id="volume-controls" class="flex items-center justify-center gap-2 hover:text-white">
+                <section id="volume-controls"
+                    class="hidden md:flex h-full items-center justify-end gap-2 hover:text-white">
                     <span class="material-symbols-outlined">volume_up</span>
                     <input id="volume" type="range" value="100" min="0" max="100" class="bg-green cursor-pointer" />
                 </section>

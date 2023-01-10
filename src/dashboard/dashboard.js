@@ -131,7 +131,7 @@ const fillPlaylistContent = async (playlistId) => {
     const pageContent = document.querySelector("#page-content");
     pageContent.innerHTML = `
     <section id="playlist-container" class="w-full">
-        <div id="playlist-banner" class="grid place-content-center grid-cols-[0.5fr_1.5fr] w-full h-[30vh] overflow-hidden">
+        <div id="playlist-banner" class="grid px-1 place-content-center grid-cols-[1fr_1fr] md:grid-cols-[0.5fr_1.5fr] w-full h-[30vh] overflow-hidden">
             
         </div>
         <div class="playlist-controls grid grid-cols-[1fr_1fr] h-[5vh] place-items-center">
@@ -180,7 +180,7 @@ const loadPlaylistBanner = ({ name, type, description, images }) => {
     <div class="playlist-info flex flex-col gap-1 pl-2 justify-center items-start">
         <p class="content-type font-semibold capitalize">${type}</p>
         <header>
-            <h1 id="playlist-title" class="text-4xl font-bold capitalize">${name}</h1>
+            <h1 id="playlist-title" class="text-2xl md:text-4xl font-bold capitalize">${name}</h1>
         </header>
         <div class="desc mt-4">
             <p id="playlist-desc">${description}</p>
