@@ -12,9 +12,11 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,1,0" />
 </head>
 
-<body class="h-screen bg-black text-white">
-    <main class="grid-template-areas grid h-full grid-cols-[250px_1fr] grid-rows-[1fr_75px] place-items-center text-sm">
-        <aside class="side-nav flex h-full w-full flex-col gap-[1rem] px-[1rem]">
+<body class="h-screen bg-black text-white text-sm md:text-base">
+    <main
+        class="grid-template-areas grid h-full grid-cols-[0_1fr] md:grid-cols-[250px_1fr] grid-rows-[1fr_75px] place-items-center text-sm">
+        <aside
+            class="side-nav hidden absolute top-0 left-0 md:static md:flex h-full w-full flex-col gap-[1rem] px-[1rem]">
             <div class="spotify-logo mt-6 w-full pb-3">
                 <img class="w-full h-full object-contain" src="spotify-logo.png" alt="Spotify">
             </div>
@@ -86,7 +88,7 @@
             <nav id="content-nav"
                 class="z-20 flex h-[8vh] w-full items-center justify-between px-[2rem] py-[0.5rem] duration-200">
                 <div class="grid w-[10vw] grid-cols-[1fr_1fr] place-items-center">
-                    <button id="back-btn" class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
+                    <button id="back-btn" class="group rounded-full border-2 p-[0.5rem] pointer-events-none hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
                             class="h-[1.3rem] w-[1.3rem] duration-200 group-hover:h-[1.4rem] group-hover:w-[1.4rem]">
@@ -94,7 +96,7 @@
                         </svg>
                     </button>
 
-                    <button id="forward-btn" class="group rounded-full border-2 p-[0.5rem] pointer-events-none">
+                    <button id="forward-btn" class="group rounded-full border-2 p-[0.5rem] pointer-events-none hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor"
                             class="h-[1.3rem] w-[1.3rem] duration-200 group-hover:h-[1.4rem] group-hover:w-[1.4rem]">
@@ -103,8 +105,7 @@
                     </button>
                 </div>
                 <div id="profile-btn"
-                    class="group group relative flex h-[5vh] cursor-pointer items-center justify-center gap-[1rem] rounded-r-full rounded-l-full bg-black px-[2rem] duration-200 hover:bg-gray-800">
-                    <!-- <img src="profile.png" alt="user-profile"> -->
+                    class="group group relative flex h-[4vh] md:h-[5vh] cursor-pointer items-center justify-center gap-2 lg:gap-[1rem] rounded-r-full rounded-l-full bg-black px-2 lg:px-[2rem] duration-200 hover:bg-gray-800">
                     <svg id="default-profile" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor"
                         class="h-[2rem] w-[2rem] duration-200 group-hover:text-red-500">

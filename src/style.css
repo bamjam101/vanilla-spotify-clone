@@ -17,6 +17,13 @@ body {
     font-family: sans-serif, Helvetica, Arial;
 }
 
+.sm-grid-template-areas {
+    grid-template-areas:
+        "content content"
+        "player player"
+    ;
+}
+
 .grid-template-areas {
     grid-template-areas:
         "sidenav content"
