@@ -96,7 +96,7 @@ const loadSection = (section) => {
     } else if (section.type == SECTIONTYPE.PLAYLIST) {
         fillPlaylistContent(section.playlist);
     }
-    document.querySelector("#content").removeEventListener("scroll", onPageContentScroll);
+    // document.querySelector("#content").removeEventListener("scroll", onPageContentScroll);
     document.querySelector("#content").addEventListener("scroll", onPageContentScroll);
 }
 
@@ -199,21 +199,21 @@ const loadPlaylistTracks = ({ tracks }, playlistId) => {
         const { id, artists, name, album, duration_ms: duration, preview_url: previewUrl } = trackItem.track;
         const trackNode = document.createElement("article");
         trackNode.id = id;
-        trackNode.className = "track group py-2 rounded-md my-2 w-full items-center grid grid-cols-[50px_1fr_1fr_50px] hover:bg-gray-600 hover:cursor-pointer";
+        trackNode.className = "track group py-2 rounded-md my-2 w-full gap-1 items-center grid grid-cols-[50px_1fr_1fr_50px] hover:bg-gray-600 hover:cursor-pointer lg:gap-0";
         const image = album.images.find(img => img.height === 64);
         const trackArtists = Array.from(artists, artist => artist.name).join(", ");
         trackNode.innerHTML = `
         <p class="text-xs relative flex justify-center items-center"><span id="track-number" class="group-hover:invisible">${counter++}</span></p>
-        <div class="track-info w-full h-full flex gap-1 items-start justify-items-start">
+        <div class="track-info w-full h-full grid grid-cols-[0.5fr_1fr] md:flex gap-1 md:items-start md:justify-items-start">
             <div class="track-img-wrapper h-full">
-                <img class="h-[50px] w-[50px]" src="${image.url}" alt="${name}">
+                <img class="h-[30px] w-[30px] md:h-[40px] md:w-[40px] lg:h-[50px] lg:w-[50px]" src="${image.url}" alt="${name}">
             </div>
             <div class="track-details">
-                <h2 id="track-name" class="text-sm opacity-70 line-clamp-1 font-bold">${name}</h2>
+                <h2 id="track-name" class="text-sm opacity-80 line-clamp-1 font-bold">${name}</h2>
                 <p class="text-xs opacity-60 line-clamp-1">${trackArtists}</p>
             </div>
         </div>
-        <p class="text-sm">${album.name}</p>
+        <p class="text-sm opacity-60">${album.name}</p>
         <p class="opacity-60 text-sm">${formatDuration(duration)}</p>
         `;
         loadedTracks.push({ id, trackArtists, name, album, duration, previewUrl, image });
@@ -227,7 +227,6 @@ const loadPlaylistTracks = ({ tracks }, playlistId) => {
         playButtonForTrackNode.addEventListener("click", (event) => playTrack(event, loadedTracks, { image, trackArtists, name, previewUrl, id }));
         trackNode.querySelector("p").appendChild(playButtonForTrackNode);
         trackContainer.appendChild(trackNode);
-
     }
 }
 
@@ -258,13 +257,13 @@ const playTrackHighlight = (id) => {
             trackItem.classList.add("bg-gray-600");
             trackItem.querySelector("p span").classList.add("invisible");
             trackItem.querySelector("p .play").classList.remove("invisible");
-            trackItem.querySelector("#track-name").classList.remove("opacity-70");
+            trackItem.querySelector("#track-name").classList.remove("opacity-80");
             trackItem.querySelector("#track-name").classList.add("text-light-green");
         } else {
             trackItem.classList.remove("bg-gray-600", "selected");
             trackItem.querySelector("p .play").classList.add("invisible");
             trackItem.querySelector("p span").classList.remove("invisible");
-            trackItem.querySelector("#track-name").classList.add("opacity-70");
+            trackItem.querySelector("#track-name").classList.add("opacity-80");
             trackItem.querySelector("#track-name").classList.remove("text-light-green");
         }
     })
