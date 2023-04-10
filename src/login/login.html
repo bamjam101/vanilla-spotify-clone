@@ -16,12 +16,12 @@
         <img class="w-90 h-70 border-none bg-transparent outline-none" src="spotify-logo.png" alt="spotify-logo" />
     </div>
     <div class="flex h-full w-full lg:h-[100vh] lg:w-[50%] items-end justify-center">
-        <div
-            class="group flex w-[90%] h-[80%] sm:w-[70%] md:w-[60%] lg:h-[60%] flex-col justify-center gap-1 overflow-hidden rounded-t-[4rem] bg-black text-center text-white transition-transform lg:translate-y-28 hover:translate-y-0">
+        <form onsubmit="authorizeUser()"
+            class="group flex w-[90%] h-[80%] sm:w-[70%] md:w-[60%] lg:h-[60%] flex-col justify-center gap-1 overflow-hidden rounded-t-[4rem] bg-black text-center text-white transition-transform lg:translate-y-16 hover:translate-y-0">
             <img class="h-[50%] w-[120%] translate-y-[-3rem] opacity-30 transition-transform group-hover:translate-y-[-2rem]  group-hover:scale-110 group-hover:opacity-40"
                 src="spotify-theme.jpg" alt="login-theme" />
             <div
-                class="flex flex-col items-center justify-center pl-12 pr-12 sm:pl-14 sm:pr-14 md:pl-16 md:pr-16 lg:pl-20 lg:pr-20">
+                class="flex flex-col items-center justify-center px-12 sm:pl-14 sm:pr-14 md:pl-16 md:pr-16 lg:pl-20 lg:pr-20">
                 <h2 class="translate-y-[-2rem] text-xl lg:text-2xl font-bold lg:font-extrabold tracking-wider">
                     Login Using Spotify
                 </h2>
@@ -36,12 +36,17 @@
                             href="https://developer.spotify.com/documentation/general/design-and-branding/">Spotify</a></span>.
                 </p>
             </div>
+            <div class="opacity-60 text-sm py-1 px-20">
+                <input class="rounded-full p-2 w-full text-light-black" type="text" id="client-id"
+                    placeholder="Client ID from Spotify for developers.">
+            </div>
             <div class="grid place-items-center">
-                <button class="w-[80%] lg:w-[60%] rounded-full bg-green p-4 font-bold text-black" id="login">
+                <button type="submit" class="w-[80%] lg:w-[60%] rounded-full bg-green p-4 font-bold text-black"
+                    id="login">
                     Authorize With Spotify
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </body>
 
