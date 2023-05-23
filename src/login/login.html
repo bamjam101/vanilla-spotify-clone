@@ -12,17 +12,16 @@
 
 <body
     class="flex items-center flex-col justify-center overflow-hidden bg-green lg:flex-row h-[100vh] w-full text-sm sm:text-base md:text-lg">
-    <div class="flex h-[30vh] w-[100%] lg:h-[100vh] lg:w-[50%] items-center justify-center p-10">
+    <div class="flex h-[70vw] w-[100%] lg:h-[100vh] lg:w-[50%] items-center justify-center p-10">
         <img class="w-90 h-70 border-none bg-transparent outline-none" src="spotify-logo.png" alt="spotify-logo" />
     </div>
     <div class="flex h-full w-full lg:h-[100vh] lg:w-[50%] items-end justify-center">
         <form onsubmit="authorizeUser()"
             class="group flex w-[90%] h-[80%] sm:w-[70%] md:w-[60%] lg:h-[60%] flex-col justify-center gap-1 overflow-hidden rounded-t-[4rem] bg-black text-center text-white transition-transform lg:translate-y-14 hover:translate-y-0">
-            <img class="h-[50%] w-[120%] translate-y-[-3rem] opacity-30 transition-transform group-hover:translate-y-[-2rem]  group-hover:scale-110 group-hover:opacity-40"
+            <img class="h-[50%] w-[120%] translate-y-[-3rem] opacity-30 transition-transform group-hover:translate-y-[-2rem]  group-hover:scale-110 group-hover:opacity-30"
                 src="spotify-theme.jpg" alt="login-theme" />
-            <div
-                class="flex flex-col items-center justify-center px-12 sm:pl-14 sm:pr-14 md:pl-16 md:pr-16 lg:pl-20 lg:pr-20">
-                <h2 class="translate-y-[-2rem] text-xl lg:text-2xl font-bold lg:font-extrabold tracking-wider">
+            <div class="flex translate-y-[-3rem] flex-col items-center justify-center px-12">
+                <h2 class=" text-xl lg:text-2xl py-1 font-bold lg:font-extrabold tracking-wider">
                     Login Using Spotify
                 </h2>
                 <p class="opacity-60">
@@ -36,7 +35,7 @@
                             href="https://developer.spotify.com/documentation/general/design-and-branding/">Spotify</a></span>.
                 </p>
             </div>
-            <div class="grid place-items-center gap-2">
+            <div class="translate-y-[-2.5rem] grid place-items-center gap-2">
                 <div class="flex w-[60%] items-center gap-1">
                     <input class="rounded-full text-sm p-2 w-full text-light-black" type="text" id="client-id"
                         placeholder="Client ID from Spotify for developers.">
@@ -73,7 +72,8 @@
                         </svg>
                     </a>
                 </div>
-                <button type="submit" class="w-[60%] lg:w-[60%] rounded-full bg-green px-4 py-1 font-bold text-black"
+                <button type="submit"
+                    class="w-[60%] lg:w-[60%] rounded-full bg-green px-4 py-1 lg:group-hover:pointer-events-auto lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-opacity duration-500 lg:pointer-events-none lg:opacity-0 lg:translate-y-[1rem] font-bold text-black"
                     id="login">
                     Authorize With Spotify
                 </button>
